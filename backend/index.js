@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 var userRouter = require('./routes/user');
+var apiRouter = require('./routes/api');
 
 const port = process.env.PORT;
 
@@ -21,6 +22,7 @@ app.get('/hello', (req,res)=>{
 });
 
 app.use('/', userRouter);
+app.use('/api', apiRouter);
 
 // app.use(function (err, req, res, next) {
 //   if (err){
