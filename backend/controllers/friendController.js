@@ -31,10 +31,19 @@ exports.send_friend_request = async (req,res,next) => {
 
 exports.view_friend_requests = async (req,res,next) => {
   try {
-    if(req.params.userId != req.body.userId){
-      return res.status(401).json({error: "Unauthorized"})
-    }
     const requests = await Friend.find({"receiverId": req.params.userId, response: false});
+    if(!requests) {
+      return res.status(404).json({error: "Could not found"});
+    }
+    res.status(200).json(requests);
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.view_friends = async (req,res,next) => {
+  try {
+    const requests = await Friend.find({ $or: [{"receiverId": req.params.userId}, {"senderId": req.params.userId}] , response: true});
     if(!requests) {
       return res.status(404).json({error: "Could not found"});
     }
@@ -69,6 +78,18 @@ exports.response_friend_request = async (req,res,next) => {
           next(error);
       }
     }
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.find_people = async (req,res,next) => {
+  try {
+    const peoples = await User.find();
+    if(peoples.length == 0) {
+      return res.status(404).json({error: "No user not found"});
+    }
+    res.status(200).json(peoples);
   } catch (error) {
     next(error);
   }

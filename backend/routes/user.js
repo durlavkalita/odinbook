@@ -48,6 +48,7 @@ router.post('/login', async (req, res, next)=> {
         return next(error);
     }
   })(req, res, next);
+  // console.log('login complete');
 });
 
 module.exports = router;

@@ -38,3 +38,31 @@ exports.create_like = async (req,res,next)=> {
       res.status(200).json({message: "Like Created"})
   });
 }
+
+exports.like_post = async (req,res,next) => {
+  try {
+      const post = await Post.findById(req.params.postId);
+      if(!post) {
+        return res.status(404).json({message: "Post not found"});
+      }
+      if(post.likes.includes(req.body.userId)) {
+          await Post.findByIdAndUpdate(req.params.postId, 
+              {$pull: {"likes": req.body.userId}},
+              {safe: true, new : true},
+              function(err) {
+                  console.log(err);
+              }
+          );
+          res.status(204).json({message: "Post disliked"});
+      } 
+      else {
+          await Post.findByIdAndUpdate(req.params.postId, 
+              {$addToSet: {"likes": req.body.userId}},
+              {safe: true, new: true}
+          );
+          res.status(200).json({message: "Post liked"});
+      }
+  } catch (error) {
+      next(error);
+  }
+}

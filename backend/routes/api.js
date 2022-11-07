@@ -17,15 +17,17 @@ router.get('/posts/:postId/comments', passport.authenticate('jwt', { session: fa
 router.post('/posts/:postId/comments', passport.authenticate('jwt', { session: false }), commentController.create_comment);
 
 router.get('/posts/:postId/likes', passport.authenticate('jwt', { session: false }), likeController.get_likes);
-router.post('/posts/:postId/likes', passport.authenticate('jwt', { session: false }), likeController.create_like);
+router.post('/posts/:postId/like', passport.authenticate('jwt', { session: false }), likeController.like_post);
 
 // friend routes //
 // POST send friend request
 router.post('/friends/:receiverUserId', passport.authenticate('jwt', { session: false }), friendController.send_friend_request);
 // GET all friend requests
-router.get('/friends/:userId', passport.authenticate('jwt', { session: false }), friendController.view_friend_requests);
+router.get('/friends/:userId', passport.authenticate('jwt', { session: false }), friendController.view_friends);
+// GET all friend requests
+router.get('/friends/:userId/requests', passport.authenticate('jwt', { session: false }), friendController.view_friend_requests);
 // POST friend request answer
 router.post('/friends/:friendId/response', passport.authenticate('jwt', { session: false }), friendController.response_friend_request);
-
+router.get('/findPeople', passport.authenticate('jwt', {session:false}), friendController.find_people);
 
 module.exports = router;
