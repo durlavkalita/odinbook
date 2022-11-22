@@ -28,12 +28,17 @@
           <!-- Profile dropdown -->
           <div class="relative ml-3">
             <div>
-              <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+              <button @click="toggleShowMenu" type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                 <span class="sr-only">Open user menu</span>
-                <router-link :to=UserProfileLink>
-                  <img class="h-8 w-8 rounded-full" src="../assets/profile_pic.png" alt="">
-                </router-link>
+                <img class="h-8 w-8 rounded-full" src="../assets/profile_pic.png" alt="">
               </button>
+            </div>
+
+            <div v-show="showMenu" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+              <!-- Active: "bg-gray-100", Not Active: "" -->
+              <router-link @click="showMenu = false" to="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</router-link>
+
+              <a @click="logout" href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Log out</a>
             </div>
           </div>
         </div>
@@ -45,11 +50,32 @@
 
 <script>
 export default {
-  computed: {
-    UserProfileLink() {
-      let currentUserId =  this.$store.getters['userId'];
-      return `/profile/${currentUserId}`;
+  data() {
+    return {
+      showMenu: false,
     }
   },
+  created() {
+    this.showMenu = false;
+  },
+  computed: {
+    userProfileLink() {
+      let currentUserId =  this.$store.getters['userId'];
+      return `/people/${currentUserId}`;
+    }
+  },
+  methods: {
+    toggleShowMenu() {
+      if(this.showMenu == false){
+        this.showMenu = true;
+      } else {
+        this.showMenu = false;
+      }
+    },
+    logout() {
+      this.showMenu = false;
+      this.$store.dispatch('logout');
+    }
+  }
 }
 </script>

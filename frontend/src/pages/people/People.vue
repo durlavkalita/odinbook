@@ -84,26 +84,28 @@
         <ul class="-my-5 divide-y divide-gray-200">
           
             <li v-for="people in fetchPeople" :key="people._id" class="py-4">
-              <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
-                  <img class="h-8 w-8 rounded-full" src="../../assets/profile_pic.png" alt="">
+              <profile-link-button :to="{name: 'people', params: {userId: people._id}}">
+                <div class="flex items-center space-x-4">
+                  <div class="flex-shrink-0">
+                    <img class="h-8 w-8 rounded-full" src="../../assets/profile_pic.png" alt="">
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                        {{people.firstName}} {{people.lastName}}
+                    </p>
+                    <p class="text-sm text-gray-500 truncate">
+                      @{{people._id}}
+                    </p>
+                  </div>
+                  <div>
+                    <form @submit.prevent="sendFriendRequest(people._id)">
+                      <button type="submit" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-white bg-blue-500 hover:bg-gray-50">
+                        Send Request
+                      </button>
+                    </form>
+                  </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate">
-                    {{people.firstName}} {{people.lastName}}
-                  </p>
-                  <p class="text-sm text-gray-500 truncate">
-                    @{{people._id}}
-                  </p>
-                </div>
-                <div>
-                  <form @submit.prevent="sendFriendRequest(people._id)">
-                    <button type="submit" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-white bg-blue-500 hover:bg-gray-50">
-                      Send Request
-                    </button>
-                  </form>
-                </div>
-              </div>
+              </profile-link-button>
             </li>
           
         </ul>
@@ -132,7 +134,7 @@ export default {
       return friendRequests;
     },
     fetchPeople() {
-      const people = this.$store.getters['people/people'];
+      const people = this.$store.getters['people/findPeople'];
       return people
     }
   },

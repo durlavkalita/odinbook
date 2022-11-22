@@ -7,6 +7,7 @@ var postController = require('../controllers/postController');
 var commentController = require('../controllers/commentController');
 var friendController = require('../controllers/friendController');
 var likeController = require('../controllers/likeController');
+var userController = require('../controllers/userController');
 
 require('../auth');
 
@@ -29,5 +30,7 @@ router.get('/friends/:userId/requests', passport.authenticate('jwt', { session: 
 // POST friend request answer
 router.post('/friends/:friendId/response', passport.authenticate('jwt', { session: false }), friendController.response_friend_request);
 router.get('/findPeople', passport.authenticate('jwt', {session:false}), friendController.find_people);
+
+router.post('/updateProfilePic/:userId', passport.authenticate('jwt',{session:false}), userController.update_profile_pic);
 
 module.exports = router;

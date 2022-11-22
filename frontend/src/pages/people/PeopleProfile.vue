@@ -50,21 +50,6 @@
                   </div>
                 </div>
               </div>
-              <form class="space-y-6" @submit.prevent="changeProfilePic">
-                <div class="mt-1 sm:mt-0 sm:col-span-2">
-                  <div class="flex">  
-                    <div class="mt-1 flex rounded-md">
-                      <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                        Change Profile Picture
-                      </span>
-                      <input v-model.trim="newProfilePicUrl" type="text" name="company_website" id="company_website" class="ml-2 flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="https://yourphoto.url">
-                      <button type="submit" class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Change
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
               <!-- user created posts -->
               <ul class="space-y-4 my-16">
                 <post-card v-for="post in userPosts" :key="post._id" :post="post"></post-card>               
@@ -82,13 +67,12 @@
 import PostCard from '../../components/PostCard.vue';
 
 export default {
+  props: ['userId'],
   components: {PostCard},
   data() {
     return {
       userDetails : {},
-      userPosts : [],
-      userId: this.$store.getters['userId'],
-      newProfilePicUrl: ''
+      userPosts : []
     }
   },
   created() {
@@ -124,17 +108,6 @@ export default {
         this.userPosts = userPosts;
       } catch (error) {
         console.log(error);
-      }
-    },
-    async changeProfilePic() {
-      if(this.newProfilePicUrl == ''){
-        alert('Invalid url provided.')
-      }else{
-        console.log(this.newProfilePicUrl);
-        const payload = {
-          profilePic: this.newProfilePicUrl
-        };
-        this.$store.dispatch('people/changeProfilePic', payload);
       }
     }
   }

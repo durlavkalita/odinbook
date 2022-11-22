@@ -5,16 +5,18 @@ import People from './pages/people/People.vue';
 import Login from './pages/auth/Login.vue';
 import Register from './pages/auth/Register.vue';
 import Profile from './pages/profile/Profile.vue';
-import NotFound from './pages/NotFound.vue'
-import store from './store/index'
+import NotFound from './pages/NotFound.vue';
+import PeopleProfile from './pages/people/PeopleProfile.vue';
+import store from './store/index';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {path: '/', redirect: '/timeline', meta: {requiresAuth: true}},
     {path: '/timeline', component: Timeline, meta: {requiresAuth: true}},
-    {path: '/profile/:userId', props: true, component: Profile, meta: {requiresAuth: true}},
+    {path: '/profile', props: true, component: Profile, meta: {requiresAuth: true}},
     {path: '/people', component: People, meta: {requiresAuth: true}},
+    {path: '/people/:userId', props: true, component: PeopleProfile, meta: {requiresAuth: true}, name: 'people'},
     {path: '/login', component: Login, meta: {requiresUnAuth: true}},
     {path: '/register', component: Register, meta: {requiresUnAuth: true}},
     {path: '/:notFound(.*)', component: NotFound },

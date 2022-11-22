@@ -36,6 +36,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('people/loadPeople');
     this.loadPosts();
   },
   methods: {

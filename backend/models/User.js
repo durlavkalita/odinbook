@@ -20,6 +20,9 @@ var UserSchema = new Schema({
     type: String,
     required: [true, 'Enter a valid password.']
   },
+  profilePic: {
+    type: String
+  },
   created_at: {
     type: Date,
     default: Date.now

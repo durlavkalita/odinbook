@@ -119,4 +119,30 @@ export default {
       console.log(error);
     }
   },
+  async changeProfilePic(context, payload){
+    let bearerToken = context.rootState.auth.token ||  localStorage.getItem('token'); // remove localstorage later
+    let userId = context.rootState.auth.userId || localStorage.getItem('userId');
+    let url = `http://localhost:3000/api/updateProfilePic/${userId}`;
+    let config = {
+      headers: {
+        'Authorization': 'Bearer ' + bearerToken
+      }
+    }
+    let responsePayload = {
+      'profilePic': payload.profilePic
+    }
+    try {
+      await axios
+      .post(url, responsePayload, config)
+      .then((response) => {
+        // context.commit('setPosts', response.data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      }) 
+    } catch (error) {
+      console.log(error);
+    } 
+  }
 }
