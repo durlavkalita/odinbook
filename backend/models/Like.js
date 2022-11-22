@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var PostSchema = new Schema({
-  content: {
-    type: String,
-    required: [true, 'Post must not be empty']
-  },
+var LikeSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true
+  },
+  postId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
     required: true
   },
   created_at: {
@@ -18,4 +19,4 @@ var PostSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model('Like', LikeSchema);
